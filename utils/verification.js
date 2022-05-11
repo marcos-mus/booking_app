@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import Hotel from "../models/Hotel.js";
 import { createError } from "./error.js";
 
 export const verifyToken = (req, res, next) => {
@@ -13,7 +14,7 @@ export const verifyToken = (req, res, next) => {
 };
 
 export const verifyUser = (req, res, next) => {
-  verifyToken(req, res, () => {
+  verifyToken(req, res, next, () => {
     if (req.user.id === req.params.id || req.user.isAdmin) next();
     else
       next(createError(403, "You are not authorized to perform this action"));
@@ -21,9 +22,20 @@ export const verifyUser = (req, res, next) => {
 };
 
 export const verifyAdmin = (req, res, next) => {
-  verifyToken(req, res, () => {
+  verifyToken(req, res, next, () => {
     if (req.user.isAdmin) next();
     else
       next(createError(403, "You are not authorized to perform this action"));
   });
+};
+
+export const verifyHotel = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const hotel = await Hotel.findById(id);
+    if (hotel) next();
+    else next(createError(403, "Hotel Not Found"));
+  } catch (error) {
+    next(error);
+  }
 };
