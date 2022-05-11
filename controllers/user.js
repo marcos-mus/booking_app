@@ -1,6 +1,30 @@
 import User from "../models/User.js";
 import {createError} from '../utils/error.js';
 
+export const updateUser = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      id,
+      { $set: req.body },
+      { new: true }
+    );
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteUser = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    await User.findByIdAndDelete(id);
+    res.status(200).json({ message: "User deleted" });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const getUser = async (req, res, next) => {
   const { id } = req.params;
   try {
