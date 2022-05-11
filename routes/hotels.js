@@ -5,7 +5,7 @@ import {
   getHotel,
   updateHotel,
   deleteHotel,
-} from "../controllers/hotels.js";
+} from "../controllers/hotel.js";
 import { verifyAdmin, verifyHotel } from "../utils/verification.js";
 
 const router = express.Router();
