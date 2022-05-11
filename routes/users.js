@@ -5,7 +5,11 @@ import {
   updateUser,
   deleteUser,
 } from "../controllers/user.js";
-import { verifyAdmin, verifyUser } from "../utils/verification.js";
+import {
+  verifyAdmin,
+  verifyIfUserExists,
+  verifyUser,
+} from "../utils/verification.js";
 
 const router = express.Router();
 
@@ -22,7 +26,7 @@ const router = express.Router();
 
 router.get("/", verifyAdmin, getUsers);
 router.get("/:id", verifyUser, getUser);
-router.put("/:id", verifyUser, updateUser);
-router.delete("/:id", verifyUser, deleteUser);
+router.put("/:id", verifyIfUserExists, verifyUser, updateUser);
+router.delete("/:id", verifyIfUserExists, verifyUser, deleteUser);
 
 export default router;

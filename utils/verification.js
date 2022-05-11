@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import Hotel from "../models/Hotel.js";
+import User from "../models/User.js";
 import { createError } from "./error.js";
 
 export const verifyToken = (req, res, next) => {
@@ -35,6 +36,17 @@ export const verifyHotel = async (req, res, next) => {
     const hotel = await Hotel.findById(id);
     if (hotel) next();
     else next(createError(403, "Hotel Not Found"));
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const verifyIfUserExists = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const user = await User.findById(id);
+    if (user) next();
+    else next(createError(403, "User Not Found"));
   } catch (error) {
     next(error);
   }
