@@ -19,3 +19,11 @@ export const verifyUser = (req, res, next) => {
       next(createError(403, "You are not authorized to perform this action"));
   });
 };
+
+export const verifyAdmin = (req, res, next) => {
+  verifyToken(req, res, () => {
+    if (req.user.isAdmin) next();
+    else
+      next(createError(403, "You are not authorized to perform this action"));
+  });
+};
